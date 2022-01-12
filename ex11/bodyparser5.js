@@ -14,7 +14,6 @@ app.use('/public',static(path.join(__dirname,'public')))
 
 router.route('/process/setUserCookie').get(function(req,res){ //get 방식 파라메타 받아옴
     console.log('/process/setUserCookie 호출됨');
-    
     res.cookie('user',{
         id:'conan',
         name:'코난',
@@ -25,7 +24,6 @@ router.route('/process/setUserCookie').get(function(req,res){ //get 방식 파�
 });
 router.route('/process/showCookie').get(function(req,res){ //get 방식 파라메타 받아옴
     console.log('/process/showCookie 호출됨');
-    
     res.send(req.cookies);
 });
 
