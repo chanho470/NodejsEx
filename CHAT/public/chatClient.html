@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="/semantic/semantic.min.css" rel="stylesheet" />
+	<script src="/semantic/semantic.min.js"></script>
+    <style>
+		* {
+			padding:0;
+			margin:0;
+			box-sizing:border-box;
+		}
+		
+		html {
+			width:100%;
+			height:100%;
+		}
+		
+		body {
+			width:100%;
+			height:100%;
+			color: #000;
+			background-color: #fff;
+		}
+				
+		.container {
+			width:100%;
+			height:100%;
+			display:flex;
+			flex-flow:column wrap;
+			align-items:center;
+			justify-content:center;
+		}
+
+		#cardbox {
+			width:94%;
+			height:94%;
+			padding-left:0.4em;
+			padding-right:0.4em;
+		}
+
+		#iconImage {
+			display:inline;
+		}
+		
+		#titleText {
+			font-size:1.4em;
+			font-weight:bold;
+			color:#777;
+		}
+		
+		#contentsText {
+			color:#999;
+		}
+		
+		#result {
+			height:14em;
+			overflow:auto;
+		}
+		
+		
+		.discussion {
+		  	list-style: none;
+		  	background: #ededed;
+		  	margin: 0;
+		  	padding: 0 0 50px 0;
+		}
+		
+		.discussion li {
+		  	padding: 0.5em;
+		  	overflow: hidden;
+		  	display: flex;
+		}
+		
+		.discussion .avatar {
+		  	width: 40px;
+		  	position: relative;
+		}
+		
+		.discussion .avatar img {
+		  	display: block;
+		  	width: 100%;
+		}
+		
+		.other .avatar:after {
+		  	content: "";
+		  	position: absolute;
+		  	top: 0;
+		  	right: 0;
+		  	width: 0;
+		  	height: 0;
+		  	border: 5px solid white;
+		  	border-left-color: transparent;
+		  	border-bottom-color: transparent;
+		}
+		
+		.self {
+		  	justify-content: flex-end;
+		  	align-items: flex-end;
+		}
+		
+		.self .messages {
+		  	order: 1;
+		  	border-bottom-right-radius: 0;
+		}
+		
+		.self .avatar {
+		  	order: 2;
+		}
+		
+		.self .avatar:after {
+		  	content: "";
+		  	position: absolute;
+		  	bottom: 0;
+		  	left: 0;
+		  	width: 0;
+		  	height: 0;
+		  	border: 5px solid white;
+		  	border-right-color: transparent;
+		  	border-top-color: transparent;
+		  	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+		}
+		
+		.messages {
+		  	background: white;
+		  	padding: 10px;
+		  	border-radius: 2px;
+		  	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+		}
+		
+		.messages p {
+		  	font-size: 0.8em;
+		  	margin: 0 0 0.2em 0;
+		}
+		
+		.messages time {
+		  	font-size: 0.7em;
+		  	color: #ccc;
+		}
+		
+	</style>
+</head>
+<body>
+    <div class="container">
+        <div id="cardbox" class="ui blue fluid card">
+            <div class="content">
+                 <!-- //////////////////////////////////////// -->
+                <div class="left floated author">
+                    <img id="iconImage" class="ui avatar image" src="../images/출석확인jpg.jpg"/>
+
+                </div>
+                <div id="titleText" class="header">일대일체팅</div>
+                <div id="contentsText" class="description">
+                    연결및 로그인 후 메세지를 보내세요
+                </div>
+               <!-- //////////////////////////////////////// -->
+                <div>
+                    <div class="ui input">
+                        <input type="text" id="hostInput" value="localhost"/> 
+                    </div>
+                    <div class="ui input">
+                        <input type="text" id="portInput" value="3000"/> 
+                    </div>
+                    <br><br>
+                    <input class="ui primary button" type="button" id="connectButton" value="연결하기"/>
+                    
+                </div>
+                <br><br>
+
+                 <!-- //////////////////////////////////////// -->
+
+                <div>
+                    <div class="ui input">
+                        <input type="text" id="userIdInput" value="test01" /> 
+                    </div>
+                    <div class="ui input">
+                        <input type="password" id="userPwdInput" value="1234" /> 
+                    </div>
+                    <div class="ui input">
+                        <input type="text" id="aliasInput" value="코난" />
+                    </div>
+                    <div class="ui input">
+                        <input type="text" id="todayInput" value="쨍!" />
+                    </div>
+
+                    <br><br>
+                    <input class="ui primary button" type="button" id="loginButton" value="로그인" />
+                    <input class="ui primary button" type="button" id="logoutButton" value="로그아웃" />
+                </div>
+                <br><br>
+                <div>
+                    <div class="description">
+                        <span>보내는사람 아이디:</span>
+                        <div class="ui input"><input type="text" id="senderInput" value="test01"/></div>
+                    </div>
+                    <br>
+                    <div class="description">
+                        <span>받는사람 아이디:</span>
+                        <div class="ui input"><input type="text" id="recepientInput" value="ALL"/></div>
+                    </div>
+                    <br>
+                    <div class="description">
+                        <span>메세지   데이터:</span>
+                        <div class="ui input"><input type="text" id="dataInput" value="안녕!"/></div>
+                    </div>
+                    <br>
+                    <input type="button" id="sendButton" class="ui primary button" value="전송"/>
+                    <input type="button" id="clearButton" class="ui primary button" value="결과 지우기"/>
+                </div>
+
+                <!-- //////////////////////////////////////// -->
+                <h4 class="ui horizontal divider header">메세지</h4>
+                <div class="ui segment" id="result">
+                     <ol class="discussion">
+                         <li class="other">
+                             <div class="avatar"><img src="../images/출석확인jpg.jpg" /></div>
+                             <div class="messages">
+                                 <p>내이름은 코난이죠</p>
+                                 <time datetime="2022-01-17">12시 24분</time>
+                             </div>
+                         </li>
+                         <li class="self">
+                            <div class="avatar"><img src="../images/출석확인jpg.jpg" /></div>
+                            <div class="messages">
+                                <p>내이름은 코난이죠2</p>
+                                <time datetime="2022-01-17">12시 24분</time>
+                            </div>
+                         </li>
+                     </ol>
+                </div>
+                <!-- //////////////////////////////////////// -->
+                
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var host;
+    var port;
+    var socket;
+    
+    $(function(){
+        $('#connectButton').bind('click',function(event){
+            println('connectButton 이 클릭됨');
+            host = $('#hostInput').val();
+            port = $('#portInput').val();
+            connectToServer();
+        });
+    });
+    function connectToServer(){
+        var options ={'forceNew':true};
+        var url ="http://"+host+":"+port;
+        socket = io.connect(url,options);
+        socket.on('connect',function(){
+            println('웹 소켓 서버에 연결됨'+url);
+            socket.on('message',function(message){
+                console.log(JSON.stringify(message));
+                console.log("뭐라고 나오니? "+message.sender)
+                addToDiscussion(message.sender,message.data);
+            
+            });
+            socket.on('response',function(response){
+                console.log(JSON.stringify(response));
+                
+            });
+
+        });
+
+        socket.on('disconnect',function(){println('웹 소켓 서버종료')})
+    }
+    function println(data){
+        console.log(data);
+        $('#result').append('<p>'+data+'</p>');
+    }
+
+    function addToDiscussion(writer,msg){
+        let today = new Date();
+        let time = today.getHours() +"시"+ today.getMinutes()+"분"+today.getSeconds()+"초";
+
+      println("addtodiscussion 호출됨" + writer + "," +msg);
+      var img ="../images/출석확인jpg.jpg";
+      if(writer == 'other'){
+        img ="../images/출석확인jpg.jpg";
+      }
+      console.log("wirter_addtodiscusstion: " + writer)
+      var contents = "<li class = " + writer +">"
+        + "<div class = 'avatar' >"
+            +"<img src='" +img+"'/>"
+            +"</div>"
+            + "<div class = 'messages' >"
+                +"<p>" +msg+"</p>"
+                +"<time>"+time+"</time>"
+                +"</div>"
+                +"</li>";
+                println("추가할 HTML : "+contents);
+                $(".discussion").prepend(contents);
+
+    }
+
+    $('#sendButton').bind('click',function(event){
+        var sender = $('#senderInput').val();
+        var recepient = $('#recepientInput').val();
+        var data = $('#dataInput').val();
+        var output ={sender:sender , recepient:recepient ,command:'chat',type:'text',data:data};
+        console.log("서버로부터 보낼 데이터 : " +JSON.stringify(output));
+        addToDiscussion("self",data)
+        if(socket == undefined){
+            alert('서버에 연결되어있지 않음 먼저 서버에 연결바람');
+            return;
+        }
+        socket.emit('message',output);
+    });
+    $('#loginButton').bind('click',function(event){
+        var userId = $('#userIdInput').val();
+        var userPwd = $('#userPwdInput').val();
+        var alias = $('#aliasInput').val();
+        var today = $('#todayInput').val();
+        var output ={userId:userId , userPwd:userPwd ,alias:alias,today:today};
+        console.log("서버로부터 보낼 데이터 : " +JSON.stringify(output));
+        if(socket == undefined){
+            alert('서버에 연결되어있지 않음 먼저 서버에 연결바람');
+            return;
+        }
+        socket.emit('login',output);
+    })
+
+
+</script>
+</html>
